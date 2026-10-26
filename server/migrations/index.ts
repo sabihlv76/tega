@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { syncAllIndexes } from "../db";
-import { FareCapModel, LocationModel } from "../models";
+import { logger } from "../lib/logger";
+import { FareCapModel, LocationModel, MigrationModel } from "../models";
 import { importRuraRegistry } from "../seed/rura";
 import { refreshAllRouteCaps } from "../services/fares";
 
@@ -58,3 +59,20 @@ export const migrations: Migration[] = [
     down: async () => {},
   },
 ];
+
+/** Migrations not yet applied to the connected database, in order. */
+export async function pendingMigrations(): Promise<Migration[]> {
+  const applied = new Set((await MigrationModel.find({}).lean()).map((m) => m.name));
+  return migrations.filter((m) => !applied.has(m.name));
+}
+
+/** Applies pending migrations in order and returns their names. */
+export async function migrateUp(): Promise<string[]> {
+  const pending = await pendingMigrations();
+  for (const m of pending) {
+    logger.info(`Applying ${m.name}…`);
+    await m.up();
+    await MigrationModel.create({ name: m.name });
+  }
+  return pending.map((m) => m.name);
+}

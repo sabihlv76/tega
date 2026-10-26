@@ -17,5 +17,5 @@
     "noEmit": false
   },
   "include": ["server/**/*.ts", "server/**/*.json", "shared/**/*.ts"],
-  "exclude": ["node_modules", "dist", "legacy", "tests"]
+  "exclude": ["node_modules", "dist", "tests"]
 }

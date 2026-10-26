@@ -5,5 +5,5 @@
     "rootDir": "."
   },
   "include": ["server/**/*.ts", "server/**/*.json", "shared/**/*.ts", "tests/**/*.ts"],
-  "exclude": ["node_modules", "dist", "legacy"]
+  "exclude": ["node_modules", "dist"]
 }

@@ -64,6 +64,8 @@ function MethodCard({
   );
 }
 
+const doneUrl = (tg: Target) => (tg.kind === "booking" ? `/tickets/${tg.booking.reference}` : `/parcels/${tg.parcel.code}`);
+
 function PaymentScreen() {
   const t = useT();
   const router = useRouter();
@@ -105,8 +107,6 @@ function PaymentScreen() {
   useSocketEvent<PaymentDTO>("payment.updated", (p) => {
     if (p.id === paymentId) void payment.refetch();
   });
-
-  const doneUrl = (tg: Target) => (tg.kind === "booking" ? `/tickets/${tg.booking.reference}` : `/parcels/${tg.parcel.code}`);
 
   // Leave once the payment (or cash reservation) is settled.
   useEffect(() => {

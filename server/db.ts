@@ -44,7 +44,10 @@ export async function startMemoryMongo(persistDir?: string): Promise<MemoryServe
       await new Promise((r) => setTimeout(r, attempt * 1500));
     }
   }
-  throw lastError;
+  throw new Error(
+    `Local MongoDB failed to start: ${errorFields(lastError).error}. MongoDB 5.0+ needs a CPU with AVX: ` +
+      "on older CPUs set MONGOMS_VERSION=4.4.29 in .env and delete .data/mongo, or set MONGODB_URI to use MongoDB Atlas.",
+  );
 }
 
 function databaseInUri(uri: string): boolean {

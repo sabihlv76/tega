@@ -4,9 +4,8 @@ import { config } from "./config";
 import { connectDatabase } from "./db";
 import { startWorker } from "./jobs/worker";
 import { errorFields, logger } from "./lib/logger";
-import { UserModel } from "./models";
+import { migrateUp, pendingMigrations } from "./migrations";
 import { closeRealtime, initRealtime } from "./realtime";
-import { seedDemoData } from "./seed/seed";
 import { generateTripsFromSchedules } from "./services/trips";
 
 async function main() {
@@ -15,11 +14,13 @@ async function main() {
   }
   const db = await connectDatabase();
 
-  // Demo data is only ever written to the throwaway local database. A real database (MongoDB Atlas,
-  // configured with MONGODB_URI) is never seeded automatically; use your own seed script for it.
-  if (db.memory && config.seedOnEmpty && (await UserModel.estimatedDocumentCount()) === 0) {
-    logger.info("Empty local database: seeding demo data…");
-    await seedDemoData();
+  // The local database sets itself up (indexes, bus parks, RURA fare caps). A real database (MongoDB
+  // Atlas, configured with MONGODB_URI) is only changed by `npm run db:setup`.
+  if (db.memory) await migrateUp();
+  else {
+    const pending = await pendingMigrations();
+    if (pending.length)
+      logger.warn(`Database not set up yet (${pending.length} pending migrations). Run: npm run db:setup`);
   }
   await generateTripsFromSchedules(14);
 

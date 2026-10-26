@@ -62,8 +62,9 @@ export async function requestOtp(channel: OtpChannel, rawTarget: string, locale:
     channel,
     destination: maskDestination(channel, target),
     expiresIn: OTP_TTL_SECONDS,
-    // Only exposed when nothing is really sent (console provider) and never in production.
-    devCode: !config.isProd && isConsoleDelivery(channel) ? code : undefined,
+    // Only exposed when nothing is really sent (console provider) to the throwaway local database:
+    // never in production or with real accounts (MONGODB_URI), where the code is only in the API log.
+    devCode: !config.isProd && !config.mongoUri && isConsoleDelivery(channel) ? code : undefined,
   };
 }
 

@@ -44,10 +44,6 @@ const schema = z.object({
   TRUST_PROXY: bool,
   MONGODB_URI: optionalString,
   MONGODB_DB_NAME: optionalString,
-  SEED_ON_EMPTY: z
-    .string()
-    .optional()
-    .transform((v) => v === undefined || v === "" || v === "1" || v.toLowerCase() === "true"),
   JWT_SECRET: optionalString,
   TICKET_SECRET: optionalString,
   ACCESS_TOKEN_TTL: z.coerce.number().int().positive().default(900),
@@ -133,7 +129,6 @@ function buildConfig(env: NodeJS.ProcessEnv) {
     trustProxy: e.TRUST_PROXY,
     mongoUri: e.MONGODB_URI,
     mongoDbName: e.MONGODB_DB_NAME,
-    seedOnEmpty: e.SEED_ON_EMPTY,
     jwtSecret: e.JWT_SECRET ?? DEV_SECRET,
     ticketSecret: e.TICKET_SECRET ?? `${DEV_SECRET}-tickets`,
     usingDevSecrets: !e.JWT_SECRET || !e.TICKET_SECRET,

@@ -27,7 +27,7 @@ console.log(`  web  ${paint("4", `http://localhost:${webPort}`)}`);
 console.log(`  api  ${paint("4", `http://localhost:${apiPort}/api/v1/health`)}`);
 if (!env.MONGODB_URI) {
   console.log(
-    paint("33", "  No MONGODB_URI set: the API uses a temporary local database with demo data.\n  Copy .env.example to .env and set MONGODB_URI to use MongoDB Atlas."),
+    paint("33", "  No MONGODB_URI set: the API uses a local database (.data/mongo) with the bus parks and RURA fares.\n  Set MONGODB_URI in .env to use MongoDB Atlas."),
   );
 }
 console.log("");

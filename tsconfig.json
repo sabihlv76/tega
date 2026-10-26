@@ -20,5 +20,5 @@
     }
   },
   "include": ["next-env.d.ts", "app/**/*", "components/**/*", "lib/**/*", "shared/**/*", "*.ts", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
-  "exclude": ["node_modules", "legacy", "dist", "server", "tests", "scripts", ".data", "uploads"]
+  "exclude": ["node_modules", "dist", "server", "tests", "scripts", ".data", "uploads"]
 }

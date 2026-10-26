@@ -1,22 +1,17 @@
 import { connectDatabase } from "../db";
 import { errorFields, logger } from "../lib/logger";
 import { MigrationModel } from "../models";
-import { migrations } from "./index";
+import { migrateUp, migrations } from "./index";
 
 async function main() {
   const direction = process.argv[2] === "down" ? "down" : "up";
   const db = await connectDatabase();
   try {
-    const applied = new Set((await MigrationModel.find({}).lean()).map((m) => m.name));
     if (direction === "up") {
-      for (const m of migrations) {
-        if (applied.has(m.name)) continue;
-        logger.info(`Applying ${m.name}…`);
-        await m.up();
-        await MigrationModel.create({ name: m.name });
-      }
+      await migrateUp();
       logger.info("Migrations up to date");
     } else {
+      const applied = new Set((await MigrationModel.find({}).lean()).map((m) => m.name));
       const last = [...migrations].reverse().find((m) => applied.has(m.name));
       if (!last) {
         logger.info("Nothing to roll back");
