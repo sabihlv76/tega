@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+/*
+ * FIKA design system (Technical Implementation Pipeline §03)
+ * Space Grotesk · background #F8F8F8 · primary #000 · success #22C55E · warning #F59E0B · error #EF4444
+ * Radius: 8px cards, 6px inputs, 4px tags · Lucide icons 20px.
+ * Status colours are used as fills; the *-ink variants are darker shades for text so it meets
+ * WCAG 2.1 AA contrast on white.
+ */
+@theme {
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-canvas: #f8f8f8;
+  --color-subtle: #f2f2f2;
+  --color-line: #e8e8e8;
+  --color-muted: #6b6b6b;
+  --color-faint: #9a9a9a;
+
+  --color-success: #22c55e;
+  --color-success-ink: #15803d;
+  --color-success-soft: #ecfdf3;
+  --color-warning: #f59e0b;
+  --color-warning-ink: #b45309;
+  --color-warning-soft: #fff7e6;
+  --color-error: #ef4444;
+  --color-error-ink: #b91c1c;
+  --color-error-soft: #fef2f2;
+
+  --radius-card: 8px;
+  --radius-input: 6px;
+  --radius-tag: 4px;
+
+  --shadow-pop: 0 12px 40px rgb(0 0 0 / 0.14);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes fika-pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.pulse-ring {
+  animation: fika-pulse-ring 1.6s ease-out infinite;
+}
+
+@keyframes fika-scan-line {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(220px);
+  }
+}
+
+.scan-line {
+  animation: fika-scan-line 2s ease-in-out infinite alternate;
+}

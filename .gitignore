@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# builds
+.next/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# local data (in-memory MongoDB persistence, uploaded files)
+.data/
+uploads/
+
+# env files (commit .env.example only)
+.env
+.env.*
+!.env.example
+
+# logs
+npm-debug.log*
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
